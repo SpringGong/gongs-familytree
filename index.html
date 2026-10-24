@@ -233,6 +233,7 @@
       width: 100%;
       max-width: 460px;
       max-height: 88vh;
+      max-height: 88dvh;
       display: flex;
       flex-direction: column;
       box-shadow: 0 24px 64px rgba(0,0,0,0.22);
@@ -348,6 +349,12 @@
     }
 
     .btn-save:active { background: #4a7ab0; }
+
+    /* Prevent iOS from scrolling body content behind modals */
+    body.modal-open {
+      position: fixed;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -365,9 +372,11 @@
   <!-- Header bar -->
   <div id="app-header">
     <h1>白水电子族谱</h1>
-    <button class="header-btn" id="export-btn" title="导出 JSON 数据文件">📤</button>
-    <label for="choose-file" class="header-btn" title="导入 JSON 数据文件">📂</label>
-    <input type="file" id="choose-file" accept="application/json,.json" style="display:none">
+    <button class="header-btn" id="export-btn" title="导出族谱数据">📤</button>
+    <label for="choose-file" class="header-btn" title="导入族谱数据">📂</label>
+    <input type="file" id="choose-file" accept="application/json,.json,.json5" style="display:none">
+    <button class="header-btn" id="desc-btn" title="族谱说明">📜</button>
+    <button class="header-btn" id="info-btn" title="关于本程序">ℹ️</button>
   </div>
 
   <!-- Search bar -->
@@ -383,16 +392,19 @@
   <!-- Node context menu (right-click / long-press) -->
   <div id="node-context-menu">
     <div class="ctx-item" id="ctx-edit">编辑</div>
+    <div class="ctx-item" id="ctx-add-spouse" style="display:none;border-top:1px solid #e2e8f0">添加配偶</div>
+    <div class="ctx-item" id="ctx-add-child"  style="display:none;border-top:1px solid #e2e8f0">添加儿女</div>
   </div>
 
   <!-- Edit form modal -->
   <div id="edit-modal">
     <div class="edit-dialog">
       <div class="edit-header">
-        <span>编辑成员信息</span>
+        <span id="edit-modal-title">编辑成员信息</span>
         <button class="edit-close" id="edit-close-btn">✕</button>
       </div>
       <div class="edit-body">
+        <input type="hidden" id="edit-mode" value="edit">
         <input type="hidden" id="edit-node-key">
         <div class="field-row">
           <label>姓名</label>
@@ -406,7 +418,7 @@
           </select>
         </div>
         <div class="field-row">
-          <label>出生年份</label>
+          <label>出生年月日+时辰</label>
           <input type="text" id="edit-birthtime" placeholder="如 1950">
         </div>
         <div class="field-row">
@@ -422,7 +434,7 @@
           <input type="text" id="edit-birthplace" placeholder="出生地">
         </div>
         <div class="field-row">
-          <label>卒年</label>
+          <label>过世年月日+时辰</label>
           <input type="text" id="edit-deathtime" placeholder="如 2010">
         </div>
         <div class="field-row">
@@ -441,6 +453,55 @@
     </div>
   </div>
 
+  <!-- Desc modal -->
+  <div id="desc-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;z-index:1000;padding:16px;">
+    <div class="edit-dialog" style="max-width:480px;width:100%;height:88vh;height:88dvh;">
+      <div class="edit-header">
+        <span>族谱说明</span>
+        <button class="edit-close" id="desc-close-btn">✕</button>
+      </div>
+      <iframe id="desc-content" style="flex:1;min-height:260px;border:none;display:block;border-radius:0;" title="族谱说明"></iframe>
+      <div class="edit-footer">
+        <button class="btn-cancel" id="desc-ok-btn">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info modal -->
+  <div id="info-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;z-index:1000;padding:16px;">
+    <div class="edit-dialog" style="max-width:480px;width:100%;">
+      <div class="edit-header">
+        <span>关于本程序</span>
+        <button class="edit-close" id="info-close-btn">✕</button>
+      </div>
+      <div class="edit-body" style="line-height:1.7;font-size:14px;">
+        <div style="font-size:18px;font-weight:bold;text-align:center;margin-bottom:4px;">白水电子族谱</div>
+        <div style="text-align:center;margin-bottom:12px;">作者：白水；微信：BaishuiPanda<br>公众号：泊岸边缘人，白水边缘人</div>
+
+        <div style="font-size:15px;font-weight:bold;color:#1d4ed8;border-bottom:1px solid #cbd5e1;margin-bottom:6px;padding-bottom:2px;">版本号：2.0（2026年10月22日）</div>
+        <div style="margin-bottom:12px;">2.0版本是在1.0版本基础上，借助 AI 编程对原有程序进行了如下优化与升级：<br>
+1. 提供了数据编辑修改功能<br>
+2. 提供了添加配偶、添加子女的功能<br>
+3. 提供了辈分数字显示功能<br>
+4. 提供了本地数据存储功能，程序启动时自动读取本地数据<br>
+5. 提供了数据导出功能<br>
+6. 提供了苹果手机App功能<br>
+7. 提供了安卓手机App功能<br>
+8. 提供了示例数据，终端用户可以在示例数据上开始录入本族的数据，数据录入完成后可以将数据导出，分享给本族的其他成员</div>
+
+        <div style="font-size:15px;font-weight:bold;color:#1d4ed8;border-bottom:1px solid #cbd5e1;margin-bottom:6px;padding-bottom:2px;">版本号：1.0（2024年9月20日）</div>
+        <div>1.0版本只提供电脑本地运行功能：<br>
+1. 族谱数据树状展示功能来自于GoJS示例：https://gojs.net/latest/samples/genogram<br>
+2. 白水对GoJS示例进行了一系列优化，添加了更多的功能，主要包括能够详尽展示每个人的各种信息<br>
+3. 族谱数据作为一个大家庭的隐私数据，不应该公开展示，白水原创了数据与程序分开的功能，每个人想展示自己族谱的时候，只需要导入本族的数据就可以了</div>
+      </div>
+      <div class="edit-footer">
+        <button class="btn-cancel" id="info-ok-btn">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/json5@2/dist/index.min.js"></script>
   <script src="https://unpkg.com/gojs@3.0.4/release/go.js"></script>
   <script>
     // ───────────────────────────────────────────────────────────────────────
@@ -723,6 +784,7 @@
       myDiagram = new go.Diagram('myDiagramDiv', {
         'animationManager.isEnabled': true,
         'draggingTool.isCopyEnabled': false,
+        allowMove: false,
         allowZoom: false,
         layout: $(GenogramLayout, { direction: 90, layerSpacing: 60, columnSpacing: 100 })
       });
@@ -735,7 +797,15 @@
       myDiagram.nodeTemplate =
         $(go.Node, 'Vertical',
           { locationSpot: go.Spot.Center, locationObjectName: 'ICON', selectionObjectName: 'ICON' },
-          $(go.Panel, { name: 'ICON' },
+          $(go.TextBlock, {
+            textAlign: 'center',
+            font: 'bold 10px sans-serif',
+            stroke: 'black'
+          },
+          new go.Binding('text', 'generation', g => (g !== undefined && g !== null) ? String(g) : ''),
+          new go.Binding('visible', 'generation', g => g !== undefined && g !== null)
+          ),
+          $(go.Panel, 'Spot', { name: 'ICON' },
             $(go.Shape, {
               figure: 'RoundedRectangle',
               desiredSize: new go.Size(100, 50),
@@ -748,14 +818,17 @@
             new go.Binding('fill', 'gender', g => g === 'M' ? colors.blue : 'pink')
             ),
             $(go.TextBlock, {
+              alignment: go.Spot.Center,
               textAlign: 'center',
               verticalAlignment: go.Spot.Center,
               font: 'bold 22px sans-serif',
               desiredSize: new go.Size(100, 50),
               overflow: go.TextOverflow.Ellipsis,
-              alignmentFocus: go.Spot.Top,
               toolTip: go.GraphObject.build('ToolTip')
-                .add(new go.TextBlock({ margin: 4 }).bind('text', 'comment'))
+                .add(new go.TextBlock({ margin: 4 }).bind('text', '', (_, node) => {
+                  const d = node.part.data;
+                  return [d.name, d.comment].filter(Boolean).join('\n');
+                }))
             },
             new go.Binding('text', 'name')
             )
@@ -903,10 +976,16 @@
     }
 
     // ───────────────────────────────────────────────────────────────────────
-    // Persistent data storage (localStorage simulates data-template.json)
+    // Persistent data storage
     // ───────────────────────────────────────────────────────────────────────
     const LS_DATA   = 'gongs_data_template';
     const LS_BACKUP = 'gongs_data_template_backup';
+    const LS_DESC   = 'gongs_data_desc';
+
+    function extractDesc(text) {
+      const m = text.match(/\/\*([\s\S]*?)\*\//);
+      return m ? m[1].trim() : '';
+    }
 
     // ───────────────────────────────────────────────────────────────────────
     // Manual file import
@@ -918,20 +997,21 @@
       reader.readAsText(file);
       reader.onload = () => {
         try {
-          const data = JSON.parse(reader.result);
+          const data = JSON5.parse(reader.result);
+          localStorage.setItem(LS_DESC, extractDesc(reader.result));
 
           // Backup current data, then persist new data.
           const existing = localStorage.getItem(LS_DATA);
           if (existing) {
             localStorage.setItem(LS_BACKUP, existing);
           } else {
-            // First import: back up the bundled JSON asynchronously.
-            fetch('data-template.json')
+            // First import: back up the bundled template asynchronously.
+            fetch('data-template.json5')
               .then(r => r.text())
-              .then(t => localStorage.setItem(LS_BACKUP, t))
+              .then(t => localStorage.setItem(LS_BACKUP, JSON.stringify(JSON5.parse(t), null, 2)))
               .catch(() => {});
           }
-          localStorage.setItem(LS_DATA, reader.result);
+          localStorage.setItem(LS_DATA, JSON.stringify(data, null, 2));
 
           showLoading('数据装载进行中...');
           setTimeout(() => {
@@ -939,7 +1019,7 @@
             setupDiagram(myDiagram, data, data[0].key);
           }, 30);
         } catch {
-          showToast('JSON 格式错误，请检查文件');
+          showToast('JSON/JSON5 格式错误，请检查文件');
         }
       };
       reader.onerror = () => showToast('文件读取失败');
@@ -985,7 +1065,7 @@
     }
 
     // ───────────────────────────────────────────────────────────────────────
-    // Auto-load data-template.json on startup
+    // Auto-load data on startup
     // ───────────────────────────────────────────────────────────────────────
     function showLoading(message) {
       const overlay = document.getElementById('loading-overlay');
@@ -1007,7 +1087,10 @@
 
     function showContextMenu(node, x, y) {
       _ctxNode = node;
-      const menu = document.getElementById('node-context-menu');
+      const menu   = document.getElementById('node-context-menu');
+      const gender = node.data && node.data.gender;
+      document.getElementById('ctx-add-spouse').style.display = gender === 'M' ? 'block' : 'none';
+      document.getElementById('ctx-add-child').style.display  = gender === 'F' ? 'block' : 'none';
       menu.style.display = 'block';
       // Clamp so the menu never bleeds off-screen.
       requestAnimationFrame(() => {
@@ -1032,8 +1115,10 @@
         .map(nd => Object.fromEntries(
           Object.entries(nd).filter(([k, v]) => !k.startsWith('_') && v !== undefined)
         ));
-      const json = JSON.stringify(clean, null, 2);
-      const file = new File([json], '族谱备份.json', { type: 'application/json' });
+      const json5Data = JSON5.stringify(clean, null, 2);
+      const desc = localStorage.getItem(LS_DESC);
+      const content = desc ? `/*\n${desc}\n*/\n${json5Data}` : json5Data;
+      const file = new File([content], '族谱备份.json5', { type: 'application/json' });
 
       // On iOS (WKWebView), <a download> is silently ignored.
       // Use the native share sheet (Web Share API) instead so the user can
@@ -1041,20 +1126,37 @@
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({ files: [file], title: '族谱数据导出' });
+          return;  // share sheet opened successfully
         } catch (e) {
-          if (e.name !== 'AbortError') showToast('导出失败，请重试');
+          if (e.name === 'AbortError') return;  // user dismissed, do nothing
+          // share failed for other reason — fall through to download
+          console.warn('Web Share failed, falling back to download:', e);
         }
-        return;
       }
 
-      // Desktop fallback: trigger a normal browser file download.
+      // Desktop fallback (also used when Web Share API throws unexpectedly).
       const url = URL.createObjectURL(file);
       const a   = document.createElement('a');
       a.href     = url;
-      a.download = '族谱备份.json';
+      a.download = '族谱备份.json5';
       a.click();
       URL.revokeObjectURL(url);
       showToast('数据已导出 ✓');
+    }
+
+    // ───────────────────────────────────────────────────────────────────────
+    // Modal helpers — lock body scroll on iOS when any modal is open
+    // ───────────────────────────────────────────────────────────────────────
+    function openModal(el) {
+      el.style.display = 'flex';
+      document.body.classList.add('modal-open');
+    }
+    function closeModal(el) {
+      el.style.display = 'none';
+      const MODAL_IDS = ['edit-modal', 'info-modal', 'desc-modal'];
+      if (!MODAL_IDS.some(id => document.getElementById(id).style.display === 'flex')) {
+        document.body.classList.remove('modal-open');
+      }
     }
 
     // ───────────────────────────────────────────────────────────────────────
@@ -1063,6 +1165,9 @@
     function openEditForm() {
       hideContextMenu();
       if (!_ctxNode || !_ctxNode.data) return;
+      document.getElementById('edit-mode').value = 'edit';
+      document.getElementById('edit-modal-title').textContent = '编辑成员信息';
+      document.getElementById('edit-gender').disabled = false;
       const d = _ctxNode.data;
       document.getElementById('edit-node-key').value   = d.key;
       document.getElementById('edit-name').value        = d.name       ?? '';
@@ -1074,14 +1179,19 @@
       document.getElementById('edit-deathtime').value   = d.deathtime  ?? '';
       document.getElementById('edit-buryplace').value   = d.buryplace  ?? '';
       document.getElementById('edit-comment').value     = d.comment    ?? '';
-      document.getElementById('edit-modal').style.display = 'flex';
+      openModal(document.getElementById('edit-modal'));
     }
 
     function closeEditForm() {
-      document.getElementById('edit-modal').style.display = 'none';
+      document.getElementById('edit-gender').disabled = false;
+      closeModal(document.getElementById('edit-modal'));
     }
 
     function saveEditForm() {
+      const mode = document.getElementById('edit-mode').value;
+      if (mode === 'add-spouse') { saveAddSpouse(); return; }
+      if (mode === 'add-child')  { saveAddChild();  return; }
+
       const rawKey = document.getElementById('edit-node-key').value;
       const key    = isNaN(rawKey) ? rawKey : Number(rawKey);
       const node   = myDiagram.findNodeForKey(key);
@@ -1119,18 +1229,202 @@
         model.setDataProperty(d, 'deathtime',  newDeathtime);
         model.setDataProperty(d, 'buryplace',  newBurypl);
         model.setDataProperty(d, 'comment',    newComment);
+        if (!d.New_created) model.setDataProperty(d, 'Modified', 'X');
         model.commitTransaction('editNode');
         node.updateTargetBindings();
 
-        const clean = myDiagram.model.nodeDataArray
-          .filter(nd => nd.category !== 'LinkLabel')
-          .map(nd => Object.fromEntries(
-            Object.entries(nd).filter(([k, v]) => !k.startsWith('_') && v !== undefined)
-          ));
-        localStorage.setItem(LS_DATA, JSON.stringify(clean));
+        persistData();
 
         hideLoading();
         showToast('数据保存成功 ✓');
+      }, 50);
+    }
+
+    // ───────────────────────────────────────────────────────────────────────
+    // Persist helpers
+    // ───────────────────────────────────────────────────────────────────────
+    function persistData() {
+      const clean = myDiagram.model.nodeDataArray
+        .filter(nd => nd.category !== 'LinkLabel')
+        .map(nd => Object.fromEntries(
+          Object.entries(nd).filter(([k, v]) => !k.startsWith('_') && v !== undefined)
+        ));
+      localStorage.setItem(LS_DATA, JSON.stringify(clean));
+    }
+
+    function generateNewKey() {
+      let maxKey = 0;
+      myDiagram.model.nodeDataArray.forEach(nd => {
+        const k = Number(nd.key);
+        if (!isNaN(k) && k > maxKey) maxKey = k;
+      });
+      return maxKey + 1;
+    }
+
+    // ───────────────────────────────────────────────────────────────────────
+    // Add spouse (for M node → creates new F node + Marriage link)
+    // ───────────────────────────────────────────────────────────────────────
+    function openAddSpouseForm() {
+      hideContextMenu();
+      if (!_ctxNode || !_ctxNode.data) return;
+      document.getElementById('edit-mode').value = 'add-spouse';
+      document.getElementById('edit-modal-title').textContent = '添加配偶';
+      document.getElementById('edit-node-key').value  = _ctxNode.data.key;
+      document.getElementById('edit-name').value       = '';
+      document.getElementById('edit-gender').value     = 'F';
+      document.getElementById('edit-gender').disabled  = true;
+      document.getElementById('edit-birthtime').value  = '';
+      document.getElementById('edit-alias').value      = '';
+      document.getElementById('edit-order').value      = '';
+      document.getElementById('edit-birthplace').value = '';
+      document.getElementById('edit-deathtime').value  = '';
+      document.getElementById('edit-buryplace').value  = '';
+      document.getElementById('edit-comment').value    = '';
+      openModal(document.getElementById('edit-modal'));
+    }
+
+    function saveAddSpouse() {
+      const rawKey     = document.getElementById('edit-node-key').value;
+      const husbandKey = isNaN(rawKey) ? rawKey : Number(rawKey);
+      const husbandNode = myDiagram.findNodeForKey(husbandKey);
+      if (!husbandNode) { closeEditForm(); return; }
+
+      const val     = id => document.getElementById(id).value.trim();
+      const newName = val('edit-name');
+      if (!newName) { showToast('请输入姓名'); return; }
+
+      const newBirthtime = val('edit-birthtime')  || undefined;
+      const newAlias     = val('edit-alias')       || undefined;
+      const newOrder     = val('edit-order')       || undefined;
+      const newBirthpl   = val('edit-birthplace')  || undefined;
+      const newDeathtime = val('edit-deathtime')   || undefined;
+      const newBurypl    = val('edit-buryplace')   || undefined;
+      const newComment   = val('edit-comment')     || undefined;
+
+      closeEditForm();
+      showLoading('正在保存数据，请稍候...');
+
+      setTimeout(() => {
+        const model  = myDiagram.model;
+        const newKey = generateNewKey();
+
+        const husbandData = husbandNode.data;
+        const wifeData = { key: newKey, gender: 'F', name: newName, husband: husbandKey, New_created: 'X' };
+        if (husbandData.generation !== undefined) wifeData.generation = husbandData.generation;
+        if (newBirthtime) wifeData.birthtime  = newBirthtime;
+        if (newAlias)     wifeData.alias      = newAlias;
+        if (newOrder)     wifeData.order      = newOrder;
+        if (newBirthpl)   wifeData.birthplace = newBirthpl;
+        if (newDeathtime) wifeData.deathtime  = newDeathtime;
+        if (newBurypl)    wifeData.buryplace  = newBurypl;
+        if (newComment)   wifeData.comment    = newComment;
+
+        model.startTransaction('addSpouse');
+        model.addNodeData(wifeData);
+
+        const mlab = { category: 'LinkLabel' };
+        model.addNodeData(mlab);
+        model.addLinkData({ from: husbandKey, to: newKey, labelKeys: [mlab.key], category: 'Marriage' });
+
+        model.commitTransaction('addSpouse');
+        persistData();
+        hideLoading();
+        showToast('配偶已添加 ✓');
+      }, 50);
+    }
+
+    // ───────────────────────────────────────────────────────────────────────
+    // Add child (for F node → creates new child linked to F + her husband)
+    // ───────────────────────────────────────────────────────────────────────
+    function openAddChildForm() {
+      hideContextMenu();
+      if (!_ctxNode || !_ctxNode.data) return;
+
+      let husbandNode = null;
+      _ctxNode.linksConnected.each(link => {
+        if (link.category !== 'Marriage') return;
+        const other = link.fromNode === _ctxNode ? link.toNode : link.fromNode;
+        if (other && other.data && other.data.gender === 'M') husbandNode = other;
+      });
+      if (!husbandNode) { showToast('请先为该成员添加配偶'); return; }
+
+      document.getElementById('edit-mode').value = 'add-child';
+      document.getElementById('edit-modal-title').textContent = '添加儿女';
+      document.getElementById('edit-node-key').value  = _ctxNode.data.key;
+      document.getElementById('edit-name').value       = '';
+      document.getElementById('edit-gender').value     = 'M';
+      document.getElementById('edit-gender').disabled  = false;
+      document.getElementById('edit-birthtime').value  = '';
+      document.getElementById('edit-alias').value      = '';
+      document.getElementById('edit-order').value      = '';
+      document.getElementById('edit-birthplace').value = '';
+      document.getElementById('edit-deathtime').value  = '';
+      document.getElementById('edit-buryplace').value  = '';
+      document.getElementById('edit-comment').value    = '';
+      openModal(document.getElementById('edit-modal'));
+    }
+
+    function saveAddChild() {
+      const rawKey    = document.getElementById('edit-node-key').value;
+      const motherKey = isNaN(rawKey) ? rawKey : Number(rawKey);
+      const motherNode = myDiagram.findNodeForKey(motherKey);
+      if (!motherNode) { closeEditForm(); return; }
+
+      const val       = id => document.getElementById(id).value.trim();
+      const newName   = val('edit-name');
+      const newGender = document.getElementById('edit-gender').value;
+      if (!newName) { showToast('请输入姓名'); return; }
+
+      let husbandNode      = null;
+      let marriageLabelKey = null;
+      motherNode.linksConnected.each(link => {
+        if (link.category !== 'Marriage' || !link.data) return;
+        const other = link.fromNode === motherNode ? link.toNode : link.fromNode;
+        if (other && other.data && other.data.gender === 'M') {
+          husbandNode      = other;
+          marriageLabelKey = link.data.labelKeys && link.data.labelKeys[0];
+        }
+      });
+      if (!husbandNode || marriageLabelKey == null) {
+        showToast('请先为该成员添加配偶');
+        closeEditForm();
+        return;
+      }
+
+      const newBirthtime = val('edit-birthtime')  || undefined;
+      const newAlias     = val('edit-alias')       || undefined;
+      const newOrder     = val('edit-order')       || undefined;
+      const newBirthpl   = val('edit-birthplace')  || undefined;
+      const newDeathtime = val('edit-deathtime')   || undefined;
+      const newBurypl    = val('edit-buryplace')   || undefined;
+      const newComment   = val('edit-comment')     || undefined;
+
+      closeEditForm();
+      showLoading('正在保存数据，请稍候...');
+
+      setTimeout(() => {
+        const model      = myDiagram.model;
+        const newKey     = generateNewKey();
+        const fatherKey  = husbandNode.data.key;
+
+        const childData = { key: newKey, gender: newGender, name: newName, mother: motherKey, father: fatherKey, New_created: 'X' };
+        if (motherNode.data.generation !== undefined) childData.generation = motherNode.data.generation + 1;
+        if (newBirthtime) childData.birthtime  = newBirthtime;
+        if (newAlias)     childData.alias      = newAlias;
+        if (newOrder)     childData.order      = newOrder;
+        if (newBirthpl)   childData.birthplace = newBirthpl;
+        if (newDeathtime) childData.deathtime  = newDeathtime;
+        if (newBurypl)    childData.buryplace  = newBurypl;
+        if (newComment)   childData.comment    = newComment;
+
+        model.startTransaction('addChild');
+        model.addNodeData(childData);
+        model.addLinkData({ from: marriageLabelKey, to: newKey });
+        model.commitTransaction('addChild');
+
+        persistData();
+        hideLoading();
+        showToast('儿女已添加 ✓');
       }, 50);
     }
 
@@ -1191,11 +1485,16 @@
       try {
         // Prefer localStorage (written by file import) over the bundled JSON.
         const saved = localStorage.getItem(LS_DATA);
-        const data = saved ? JSON.parse(saved)
-                           : await fetch('data-template.json').then(r => {
-                               if (!r.ok) throw new Error('HTTP ' + r.status);
-                               return r.json();
-                             });
+        let data;
+        if (saved) {
+          data = JSON.parse(saved);
+        } else {
+          const r = await fetch('data-template.json5');
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          const t = await r.text();
+          localStorage.setItem(LS_DESC, extractDesc(t));
+          data = JSON5.parse(t);
+        }
         showLoading('数据装载进行中...');
         // Defer one tick so the browser can repaint the overlay before heavy work.
         setTimeout(() => {
@@ -1226,17 +1525,40 @@
 
       // Context menu actions
       document.getElementById('ctx-edit').addEventListener('click', openEditForm);
+      document.getElementById('ctx-add-spouse').addEventListener('click', openAddSpouseForm);
+      document.getElementById('ctx-add-child').addEventListener('click',  openAddChildForm);
 
       // Edit modal actions
       document.getElementById('edit-close-btn').addEventListener('click',  closeEditForm);
       document.getElementById('edit-cancel-btn').addEventListener('click', closeEditForm);
       document.getElementById('edit-save-btn').addEventListener('click',   saveEditForm);
 
+      // Info modal
+      const infoModal = document.getElementById('info-modal');
+      document.getElementById('info-btn').addEventListener('click',    () => { openModal(infoModal); });
+      document.getElementById('info-close-btn').addEventListener('click', () => { closeModal(infoModal); });
+      document.getElementById('info-ok-btn').addEventListener('click',    () => { closeModal(infoModal); });
+      infoModal.addEventListener('click', e => { if (e.target === infoModal) closeModal(infoModal); });
+
+      // Desc modal
+      const descModal = document.getElementById('desc-modal');
+      document.getElementById('desc-btn').addEventListener('click', () => {
+        const text = localStorage.getItem(LS_DESC);
+        const iframe = document.getElementById('desc-content');
+        iframe.srcdoc = text || '<p style="margin:20px;font-family:sans-serif;font-size:15px;color:#666;">暂无族谱说明</p>';
+        openModal(descModal);
+      });
+      document.getElementById('desc-close-btn').addEventListener('click', () => { closeModal(descModal); });
+      document.getElementById('desc-ok-btn').addEventListener('click',    () => { closeModal(descModal); });
+      descModal.addEventListener('click', e => { if (e.target === descModal) closeModal(descModal); });
+
       // Escape key closes the modal
       document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
           closeEditForm();
           hideContextMenu();
+          closeModal(document.getElementById('info-modal'));
+          closeModal(document.getElementById('desc-modal'));
         }
       });
 
