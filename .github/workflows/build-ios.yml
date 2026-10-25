@@ -28,7 +28,7 @@ jobs:
         run: npx cap add ios
 
       - name: Install Pillow for icon generation
-        run: pip install Pillow
+        run: python3 -m pip install Pillow
 
       - name: Generate iOS app icons
         run: python3 generate_ios_icons.py
