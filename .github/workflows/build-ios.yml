@@ -27,11 +27,43 @@ jobs:
       - name: Add iOS platform
         run: npx cap add ios
 
-      - name: Install Pillow for icon generation
-        run: python3 -m pip install Pillow
-
       - name: Generate iOS app icons
-        run: python3 generate_ios_icons.py
+        run: |
+          ICONSET=ios/App/App/Assets.xcassets/AppIcon.appiconset
+          SRC=app_icon.png
+
+          # Generate each pixel size with sips (built-in macOS tool)
+          generate() { sips -z $1 $1 "$SRC" --out "$ICONSET/Icon-${1}.png" > /dev/null; }
+          generate 20; generate 29; generate 40; generate 58; generate 60
+          generate 76; generate 80; generate 87; generate 120; generate 152; generate 167
+          generate 180; generate 1024
+
+          # Write Contents.json
+          cat > "$ICONSET/Contents.json" << 'EOF'
+          {
+            "images": [
+              {"idiom":"iphone","scale":"2x","size":"20x20","filename":"Icon-40.png"},
+              {"idiom":"iphone","scale":"3x","size":"20x20","filename":"Icon-60.png"},
+              {"idiom":"iphone","scale":"2x","size":"29x29","filename":"Icon-58.png"},
+              {"idiom":"iphone","scale":"3x","size":"29x29","filename":"Icon-87.png"},
+              {"idiom":"iphone","scale":"2x","size":"40x40","filename":"Icon-80.png"},
+              {"idiom":"iphone","scale":"3x","size":"40x40","filename":"Icon-120.png"},
+              {"idiom":"iphone","scale":"2x","size":"60x60","filename":"Icon-120.png"},
+              {"idiom":"iphone","scale":"3x","size":"60x60","filename":"Icon-180.png"},
+              {"idiom":"ipad","scale":"1x","size":"20x20","filename":"Icon-20.png"},
+              {"idiom":"ipad","scale":"2x","size":"20x20","filename":"Icon-40.png"},
+              {"idiom":"ipad","scale":"1x","size":"29x29","filename":"Icon-29.png"},
+              {"idiom":"ipad","scale":"2x","size":"29x29","filename":"Icon-58.png"},
+              {"idiom":"ipad","scale":"1x","size":"40x40","filename":"Icon-40.png"},
+              {"idiom":"ipad","scale":"2x","size":"40x40","filename":"Icon-80.png"},
+              {"idiom":"ipad","scale":"1x","size":"76x76","filename":"Icon-76.png"},
+              {"idiom":"ipad","scale":"2x","size":"76x76","filename":"Icon-152.png"},
+              {"idiom":"ipad","scale":"2x","size":"83.5x83.5","filename":"Icon-167.png"},
+              {"idiom":"ios-marketing","scale":"1x","size":"1024x1024","filename":"Icon-1024.png"}
+            ],
+            "info": {"author":"xcode","version":1}
+          }
+          EOF
 
       - name: Sync web assets to iOS
         run: npx cap sync ios
