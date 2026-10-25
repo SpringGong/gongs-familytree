@@ -1,0 +1,79 @@
+<view class="page">
+  <!-- Search bar -->
+  <view class="search-bar">
+    <input class="search-input" value="{{searchText}}" placeholder="搜索姓名或地名..." bindinput="onSearchInput" confirm-type="search" bindconfirm="doSearch"/>
+    <view class="search-btn" bindtap="doSearch">搜索</view>
+    <view class="search-btn secondary" bindtap="searchNext">下一个</view>
+    <view class="menu-btn" bindtap="toggleMenu">☰</view>
+  </view>
+
+  <!-- Canvas (fills remaining space) -->
+  <canvas
+    type="2d"
+    id="treeCanvas"
+    class="tree-canvas"
+    bindtouchstart="onTouchStart"
+    bindtouchmove="onTouchMove"
+    bindtouchend="onTouchEnd"
+  />
+
+  <!-- Menu overlay -->
+  <view class="overlay" wx:if="{{menuVisible}}" bindtap="hideMenu" />
+  <view class="menu-popup {{menuVisible ? 'visible' : ''}}">
+    <view class="menu-item" bindtap="exportData">📤 导出族谱数据</view>
+    <view class="menu-item" bindtap="importData">📂 导入族谱数据</view>
+    <view class="menu-item" bindtap="showDesc">📜 族谱续修前言</view>
+    <view class="menu-item" bindtap="goAbout">ℹ️ 关于本程序</view>
+  </view>
+
+  <!-- Node detail bottom sheet -->
+  <view class="detail-mask {{detailVisible ? 'visible' : ''}}" bindtap="closeDetail" />
+  <view class="detail-sheet {{detailVisible ? 'visible' : ''}}">
+    <view class="detail-header">
+      <view class="detail-gender-badge {{selectedNode.gender === 'M' ? 'male' : 'female'}}">
+        {{selectedNode.gender === 'M' ? '男' : '女'}}
+      </view>
+      <text class="detail-name">{{selectedNode.name}}</text>
+      <view class="detail-gen" wx:if="{{selectedNode.generation}}">第{{selectedNode.generation}}世</view>
+      <view class="detail-close" bindtap="closeDetail">✕</view>
+    </view>
+    <view class="detail-body">
+      <view class="detail-row" wx:if="{{selectedNode.alias}}">
+        <text class="detail-label">字号</text><text class="detail-val">{{selectedNode.alias}}</text>
+      </view>
+      <view class="detail-row" wx:if="{{selectedNode.order}}">
+        <text class="detail-label">排行</text><text class="detail-val">{{selectedNode.order}}</text>
+      </view>
+      <view class="detail-row" wx:if="{{selectedNode.birthtime}}">
+        <text class="detail-label">生</text><text class="detail-val">{{selectedNode.birthtime}}</text>
+      </view>
+      <view class="detail-row" wx:if="{{selectedNode.birthplace}}">
+        <text class="detail-label">出生地</text><text class="detail-val">{{selectedNode.birthplace}}</text>
+      </view>
+      <view class="detail-row" wx:if="{{selectedNode.deathtime}}">
+        <text class="detail-label">卒</text><text class="detail-val">{{selectedNode.deathtime}}</text>
+      </view>
+      <view class="detail-row" wx:if="{{selectedNode.buryplace}}">
+        <text class="detail-label">葬地</text><text class="detail-val">{{selectedNode.buryplace}}</text>
+      </view>
+      <view class="detail-row comment" wx:if="{{selectedNode.comment}}">
+        <text class="detail-label">备注</text><text class="detail-val">{{selectedNode.comment}}</text>
+      </view>
+    </view>
+    <view class="detail-footer">
+      <view class="action-btn edit" bindtap="editNode">编辑</view>
+      <view class="action-btn spouse" wx:if="{{selectedNode.gender === 'M'}}" bindtap="addSpouse">添加配偶</view>
+      <view class="action-btn child" wx:if="{{selectedNode.gender === 'F'}}" bindtap="addChild">添加儿女</view>
+    </view>
+  </view>
+
+  <!-- Loading overlay -->
+  <view class="loading-overlay" wx:if="{{loading}}">
+    <view class="spinner" />
+    <text class="loading-title">白水电子族谱</text>
+    <text class="loading-sub">{{loadingText}}</text>
+  </view>
+
+  <!-- Toast -->
+  <view class="toast {{toastVisible ? 'show' : ''}}">{{toastMsg}}</view>
+</view>

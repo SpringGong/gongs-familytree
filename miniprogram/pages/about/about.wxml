@@ -1,0 +1,50 @@
+<scroll-view class="page" scroll-y>
+  <view class="content">
+    <view class="app-icon">📚</view>
+    <view class="app-title">白水电子族谱</view>
+    <view class="app-subtitle">作者：白水 · 微信：BaishuiPanda</view>
+    <view class="app-subtitle">公众号：泊岸边缘人，白水边缘人</view>
+    <view class="app-subtitle green">本软件完全免费使用</view>
+
+    <view class="section">
+      <view class="section-title">微信小程序版说明</view>
+      <view class="section-body">
+        微信小程序版支持在手机上查看、搜索和编辑家族成员信息。
+        族谱数据保存在手机本地，可通过导出功能分享给其他成员。
+        电脑版族谱数据录入程序，请通过上面的微信号联系作者。
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">版本号：2.0（2026年10月25日）</view>
+      <view class="section-body">
+        1. 提供了数据编辑修改功能<br/>
+        2. 提供了添加配偶、添加子女的功能<br/>
+        3. 提供了辈分数字显示功能<br/>
+        4. 提供了本地数据存储功能<br/>
+        5. 提供了数据导出功能<br/>
+        6. 提供了微信小程序版本<br/>
+        7. 源代码：github.com/SpringGong/gongs-familytree
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">使用说明</view>
+      <view class="section-body">
+        1. 点击族谱节点查看成员详情<br/>
+        2. 长按或点击节点后可编辑成员信息<br/>
+        3. 拖动画面可平移族谱<br/>
+        4. 搜索框可搜索姓名或地名<br/>
+        5. 右上角菜单可导入/导出族谱数据
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">数据格式</view>
+      <view class="section-body">
+        族谱数据为 JSON5 格式，可与电脑版、安卓版和 iOS 版互通。
+        导入时请选择后缀为 .json5 的族谱数据文件。
+      </view>
+    </view>
+  </view>
+</scroll-view>

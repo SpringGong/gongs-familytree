@@ -1,0 +1,3 @@
+.page { height: 100vh; background: #f5f7fb; }
+.content { padding: 16px; }
+.empty { padding: 40px; text-align: center; color: #94a3b8; font-size: 15px; }

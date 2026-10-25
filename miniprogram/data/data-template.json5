@@ -1,0 +1,181 @@
+/*
+<!DOCTYPE html>
+<html lang="zh">
+<body>
+    <HEAD>
+        <TITLE>某氏族谱说明</TITLE>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            html {
+                background: linear-gradient(160deg, #eef1f6 0%, #dbe3f0 100%);
+                min-height: 100%;
+            }
+            h1 {
+                text-align: center;
+                color: #2c4a7c;
+                font-size: 28px;
+                letter-spacing: 3px;
+                font-weight: 700;
+                margin: 30px 32px 18px;
+                padding-bottom: 14px;
+                border-bottom: 2px solid #dbe3f0;
+            }
+            h2 {
+                color: #1c3052;
+                font-size: 20px;
+                margin: 30px 32px 12px;
+                padding-left: 14px;
+                border-left: 4px solid #3a5f9d;
+                letter-spacing: 1px;
+            }
+        </style>
+    </HEAD>
+
+    <BODY>
+        <H1>某某年某氏族谱续修前言</H1>
+        <p>家族源流信息放到这个地方</p>
+
+        <br>
+
+        <br>
+        <h2>家族字辈放在下面：</h2>
+        <p>
+            国正天心顺，...<br>
+        </p>
+
+        <br>
+        <h2>其家训是:</h2>
+        <p>
+            一要孝敬父母；<br>
+            二要讲字辈；<br>
+            ...；<br>
+        </p>
+
+        <br>
+        <h2>其家规是:</h2>
+        <p>
+            一戒赌博；<br>
+            二戒争斗；<br>
+            ...；<br>
+        </p>
+
+        <br>
+        <p>我族源远流长，各种关于家族的介绍放这里</p>
+        <p class="sign">《某氏族谱》续修组<br>公元某某年某月</p>
+
+        <br>
+        <h2>名秀捐资名录</h2>
+        <p>
+            姓名 捐资金额（元） 出生地 工作单位<br>
+            某某某 200 地址 工作单位<br>
+        </p>
+
+        <br>
+        <h1>结束语</h1>
+        <p>
+            续修《某氏族谱》的意义放到这里<br>
+            <br>
+            《某氏族谱》续修组<br>
+            公元某某年某月<br>
+        </p>
+    </BODY>
+</body>
+*/
+[
+  {
+    "key": 1,
+    "name": "一世祖",
+    "alias": "字修身",
+    "gender": "M",
+    "birthtime": "出生时间不详",
+    "birthplace": "山西太原",
+    "deathtime": "过世时间不详",
+    "buryplace": "埋葬地点不详",
+    "generation": 1,
+    "comment": "进士，赴湖湖南永州为官",
+  },
+  {
+    "key": 2,
+    "name": "王氏",
+    "husband": 1,
+    "gender": "F",
+    "birthtime": "出生时间不详",
+    "birthplace": "山西太原",
+    "deathtime": "过世时间不详",
+    "buryplace": "埋葬地点不详",
+    "generation": 1,
+  },
+  {
+    "key": 3,
+    "name": "二世祖",
+    "alias": "字治国",
+    "mother": 2,
+    "father": 1,
+    "gender": "M",
+    "birthtime": "出生时间不详",
+    "birthplace": "湖广永郡",
+    "deathtime": "过世时间不详",
+    "buryplace": "埋葬地点不详",
+    "generation": 2,
+  },
+  {
+    "key": 4,
+    "name": "岩氏",
+    "husband": 3,
+    "gender": "F",
+    "birthtime": "出生时间不详",
+    "birthplace": "出生地点不详",
+    "deathtime": "过世时间不详",
+    "buryplace": "埋葬地点不详",
+    "generation": 2,
+  },
+  {
+    "key": 5,
+    "name": "三世祖",
+    "alias": "字平天下",
+    "mother": 4,
+    "father": 3,
+    "gender": "M",
+    "birthtime": "出生时间不详",
+    "birthplace": "湖广永郡",
+    "deathtime": "过世时间不详",
+    "buryplace": "埋葬地点不详",
+    "generation": 3,
+  },
+  {
+    "key": 6,
+    "name": "阎氏",
+    "husband": 5,
+    "gender": "F",
+    "birthtime": "出生时间不详",
+    "birthplace": "出生地点不详",
+    "deathtime": "过世时间不详",
+    "buryplace": "埋葬地点不详",
+    "generation": 3,
+  },
+  {
+    "key": 7,
+    "name": "四世祖",
+    "alias": "字静心",
+    "mother": 6,
+    "father": 5,
+    "gender": "M",
+    "birthtime": "出生时间不详",
+    "birthplace": "湖广永郡",
+    "deathtime": "过世时间不详",
+    "buryplace": "埋葬地点不详",
+    "generation": 4,
+  },
+  {
+    "key": 8,
+    "name": "廖氏",
+    "husband": 7,
+    "gender": "F",
+    "birthtime": "出生时间不详",
+    "birthplace": "出生地点不详",
+    "deathtime": "过世时间不详",
+    "buryplace": "埋葬地点不详",
+    "generation": 4,
+  },
+]

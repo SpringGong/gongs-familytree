@@ -1,0 +1,97 @@
+.page {
+  background: #f8fafc;
+  height: 100vh;
+}
+
+.form {
+  padding: 16px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 10px;
+  padding: 0 14px;
+  margin-bottom: 10px;
+  min-height: 52px;
+}
+
+.field-row.align-top {
+  align-items: flex-start;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.field-label {
+  font-size: 14px;
+  color: #64748b;
+  width: 88px;
+  flex-shrink: 0;
+}
+
+.field-input {
+  flex: 1;
+  height: 52px;
+  font-size: 15px;
+  color: #1e293b;
+  background: transparent;
+}
+
+.field-textarea {
+  flex: 1;
+  min-height: 80px;
+  font-size: 15px;
+  color: #1e293b;
+  background: transparent;
+  line-height: 1.5;
+}
+
+.field-picker {
+  flex: 1;
+}
+
+.picker-val {
+  height: 52px;
+  line-height: 52px;
+  font-size: 15px;
+  color: #1e293b;
+}
+
+.picker-val.disabled {
+  color: #94a3b8;
+}
+
+.btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btn-cancel {
+  flex: 1;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  background: #f1f5f9;
+  border-radius: 12px;
+  font-size: 16px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.btn-save {
+  flex: 2;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  background: #5d8cc1;
+  border-radius: 12px;
+  font-size: 16px;
+  color: white;
+  font-weight: 600;
+}
+
+.btn-save:active { background: #4a7ab0; }
+.btn-cancel:active { background: #e2e8f0; }

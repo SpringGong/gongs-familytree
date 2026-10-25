@@ -1,0 +1,56 @@
+<scroll-view class="page" scroll-y>
+  <view class="form">
+    <!-- Gender (disabled when adding spouse) -->
+    <view class="field-row">
+      <text class="field-label">性别</text>
+      <picker class="field-picker" mode="selector" range="{{genderOptions}}" value="{{genderIdx}}" bindchange="onGenderChange" disabled="{{genderDisabled}}">
+        <view class="picker-val {{genderDisabled ? 'disabled' : ''}}">{{genderOptions[genderIdx]}}</view>
+      </picker>
+    </view>
+
+    <view class="field-row">
+      <text class="field-label">姓名 *</text>
+      <input class="field-input" value="{{form.name}}" placeholder="姓名（必填）" bindinput="onInput" data-field="name"/>
+    </view>
+
+    <view class="field-row">
+      <text class="field-label">字号 / 别名</text>
+      <input class="field-input" value="{{form.alias}}" placeholder="字号或别名" bindinput="onInput" data-field="alias"/>
+    </view>
+
+    <view class="field-row">
+      <text class="field-label">排行</text>
+      <input class="field-input" value="{{form.order}}" placeholder="排行" bindinput="onInput" data-field="order"/>
+    </view>
+
+    <view class="field-row">
+      <text class="field-label">出生年月时辰</text>
+      <input class="field-input" value="{{form.birthtime}}" placeholder="如 1950年正月" bindinput="onInput" data-field="birthtime"/>
+    </view>
+
+    <view class="field-row">
+      <text class="field-label">出生地</text>
+      <input class="field-input" value="{{form.birthplace}}" placeholder="出生地" bindinput="onInput" data-field="birthplace"/>
+    </view>
+
+    <view class="field-row">
+      <text class="field-label">过世年月时辰</text>
+      <input class="field-input" value="{{form.deathtime}}" placeholder="如 2010年冬" bindinput="onInput" data-field="deathtime"/>
+    </view>
+
+    <view class="field-row">
+      <text class="field-label">葬地</text>
+      <input class="field-input" value="{{form.buryplace}}" placeholder="葬地" bindinput="onInput" data-field="buryplace"/>
+    </view>
+
+    <view class="field-row align-top">
+      <text class="field-label">备注</text>
+      <textarea class="field-textarea" value="{{form.comment}}" placeholder="备注信息" bindinput="onInput" data-field="comment"/>
+    </view>
+
+    <view class="btn-row">
+      <view class="btn-cancel" bindtap="onCancel">取消</view>
+      <view class="btn-save" bindtap="onSave">保存</view>
+    </view>
+  </view>
+</scroll-view>

@@ -1,0 +1,9 @@
+page {
+  background: #f8fafc;
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}

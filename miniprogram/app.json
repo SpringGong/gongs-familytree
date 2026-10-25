@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/edit/edit",
+    "pages/desc/desc",
+    "pages/about/about"
+  ],
+  "window": {
+    "backgroundColor": "#f8fafc",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#5d8cc1",
+    "navigationBarTitleText": "白水电子族谱",
+    "navigationBarTextStyle": "white"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

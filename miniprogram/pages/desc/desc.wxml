@@ -1,0 +1,6 @@
+<scroll-view class="page" scroll-y>
+  <view class="content" wx:if="{{descHtml}}">
+    <rich-text nodes="{{descHtml}}" />
+  </view>
+  <view wx:else class="empty">暂无族谱续修前言</view>
+</scroll-view>
