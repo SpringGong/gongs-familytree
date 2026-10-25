@@ -261,3 +261,9 @@ do the ipa and android apk updated
 ========
 I did some change to the index.html, please sync it to iOS  
 ipa and android apk
+
+========
+in VS Code, it shows there is one problem in the index.html file, please check it
+
+======
+please sync the index.html and zzz-script_for_AI.txt again
