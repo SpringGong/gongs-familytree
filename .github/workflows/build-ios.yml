@@ -27,6 +27,12 @@ jobs:
       - name: Add iOS platform
         run: npx cap add ios
 
+      - name: Install Pillow for icon generation
+        run: pip install Pillow
+
+      - name: Generate iOS app icons
+        run: python3 generate_ios_icons.py
+
       - name: Sync web assets to iOS
         run: npx cap sync ios
 

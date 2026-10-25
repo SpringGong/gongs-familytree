@@ -267,3 +267,6 @@ in VS Code, it shows there is one problem in the index.html file, please check i
 
 ======
 please sync the index.html and zzz-script_for_AI.txt again
+
+======
+in the folder gongs-familytree, I added one app_icon.png file, please use it as the icon for the ipa and apk file
