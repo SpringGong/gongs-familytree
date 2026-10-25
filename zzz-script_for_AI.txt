@@ -257,3 +257,7 @@ please change the menu "族谱说明" to "族谱续修前言"
 
 =========
 do the ipa and android apk updated
+
+========
+I did some change to the index.html, please sync it to iOS  
+ipa and android apk
