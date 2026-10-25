@@ -330,3 +330,4 @@ Once you have the AppID, put it in miniprogram/project.config.json replacing "yo
 I already had the AppID for the WeChat miniprogram, how could I publish it in WeChat
 
 ===========
+please sync the miniprogram and zzz-script_for_AI.txt into github
