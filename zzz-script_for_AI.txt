@@ -75,3 +75,185 @@ for the index.html in the currently open project, please add Edit function to ea
 
 On computer, when user right-click the mouse; or in mobile phone, when user long time press the node, then popup one menu named as "编辑"，when user choose it, then popup a form to edit each node
 
+==============
+for the index.html in the currently open project, it already have the Edit function for each node.
+
+please add a new function to add new Node in the tree:
+a. for the Node with gender = M, then it can add wife, name the context menu as "添加配偶"
+b. for the Node with gender = F, then it can add child, name the context menu as "添加儿女"
+================
+for the index.html in the currently open project, please make sure the node could not be moved
+=========
+for the index.html in the currently open project:
+a. when node is edited (changed), when save it back to data file, please mark the entry with "Modified = X"
+b. when new node is inserted into the tree, then mark the new node with "New_created = X"
+
+======
+for the index.html in the currently open project, when edit one node, or add new node：
+a. the birthtime field should change the label from "出生年份" to "出生年月日+时辰"
+b. the deathtime field should change the label from "卒年" to "过世年月日+时辰"
+======
+for the index.html in the currently open project, when add wife, the relationship info should be put in the wife data block with "husband": <then key number of husband>, DO NOT put wifes relation data in the husband data block
+
+==============
+for the index.html in the currently open project:
+a. when node is edited (changed), when save it back to data file, only mark the entry with "Modified = X" if there is no indicator of New_created = 'X' for that node. That means, if it already have the indicator New_created = 'X', then do not add the indicator "Modified = X"
+
+========
+for the data-template.json, please add a new field "generation" according to the family tree hierarchies, for example, the root node with key 0 and 1 should have generation = 1, then their children should have generation 2, ...
+Please directly update the file
+
+==========
+for the data-template.json, for husband node, we do not need the wife reference, we only need the wife node has reference to husband. please remove all wife entry in husband data block
+
+===========
+for the index.html:
+a. when add a wife node, the generation of the wife should equal to the generation of the husband.
+b. when add a child node, the generation of the child should equal to the generation of the mother + 1.
+please update the logic in index.html accordingly
+
+============
+for the index.html, when draw each node, please add a small number at the top-right corner of the node to display the generation of that node there
+
+===========
+the generation icon shows number in white colour, could you please change it to display the text in black
+
+===========
+can you move the generation icon just above the node, in the top-center
+
+==========
+in the index.html, when move mouse over one node, it will show a context information for that node, to take the data from "comment" of the data block, please change it to show the name + comment
+
+===========
+please add an information button to the index.html, at the right-side of the existing import button, when user click the button, shows the version info of the app like following:
+白水电子族谱
+作者：白水，微信：BaishuiPanda
+版本号：2.0（2026年10月22日）
+2.0版本是在1.0版本基础上，借助 AI 编程对原有程序进行了如下优化与升级：
+1. 提供了数据编辑修改功能
+2. 提供了添加配偶、添加子女的功能
+3. 提供了辈分数字显示功能
+4. 提供了本地数据存储功能，程序启动时自动读取本地数据
+5. 提供了数据导出功能
+6. 提供了苹果手机App功能
+7. 提供了安卓手机App功能
+8. 提供了示例数据，终端用户可以在示例数据上开始录入本族的数据，数据录入完成后可以将数据导出，分享给本族的其他成员
+
+版本号：1.0 (2024年9月20日)
+1.0版本只提供电脑本地运行功能：
+1. 族谱数据树状展示功能来自于GoJS示例：https://gojs.net/latest/samples/genogram
+2. 白水对GoJS示例进行了一系列优化，添加了更多的功能，主要包括能够详尽展示每个人的各种信息
+3. 族谱数据作为一个大家庭的隐私数据，不应该公开展示，白水原创了数据与程序分开的功能，每个人想展示自己族谱的时候，只需要导入本族的数据就可以了
+
+=======
+for the information part in the index.html, please mark the following three lines as Header or something to make them looks bigger and highlighted：
+a. 白水电子族谱
+b. 版本号：2.0（2026年10月22日）
+c. 版本号：1.0 (2024年9月20日)
+
+======
+does the information modal window will self resize to compatible with different size of screen, for example in PC, or in mobile phone
+
+==========
+In the current open project, can I add comments into the data-template.json
+
+==== answer ===
+No — standard JSON does not support comments. The JSON spec has no comment syntax, and parsers will throw an error if you include // or /* */ style comments.
+
+Your options:
+
+Use a _comment key — add a string field as a convention:
+
+
+{ "_comment": "This node represents the root ancestor", "key": "value" }
+Switch to JSON5 — a superset of JSON that allows // and /* */ comments, trailing commas, etc. Requires a JSON5 parser library instead of standard JSON.parse.
+
+Switch to JSONC (JSON with Comments) — used by VS Code config files. Same approach — needs a JSONC-aware parser.
+
+Keep a companion .md or .txt file alongside data-template.json that documents the schema.
+
+Given that your app reads data-template.json with JSON.parse, the simplest safe option is _comment keys — they round-trip through any standard JSON parser without changes to your code.
+
+=============
+please help to switch to Switch to JSON5
+
+============
+please help to make sure the exported file also with JSON5
+
+=========
+now the data-template.json5 has a comments included with /* */.
+
+can you please enhance the index.html, to add a new explanation button with tooltip "族谱说明", when this new button is clicked, then the text between the /* */ of the json5 file will be displayed, no matter the data come from template file or from the local storage.
+
+============
+can you change the tooltip of the import and export button to "导入族谱数据" and "导出族谱数据" respectively
+
+===========
+the introduction text between /* */ has html styling format, when you display the introduction, please just render it in html
+
+===========
+when import JSON5 data with comments, you will write the json data into the local storage, please also write the comments part between /* */ into another local storage area, when export data, you should put the comments part as the first part of the export file, the json data part as the second part into the export file, just like what it looks in the data-template.json5
+
+==========
+does the tree-template.html file used anywhere? if not, then please remove it
+
+=========
+as the data-template.json is not used any longer, please remove it
+
+=========
+what's the purpose of following files
+capacitor.config.json
+ExportOptions.plist
+manifest.json
+package-lock.json
+package.json
+
+=====answer ===
+File	Purpose
+capacitor.config.json	Capacitor (the native app wrapper) configuration. Sets the app ID (com.baishu.familytree), app name, tells Capacitor to serve the web app from the www/ folder, and configures the splash screen. Required for building the iOS and Android apps.
+ExportOptions.plist	Apple Xcode archive export settings used during the GitHub Actions iOS build pipeline. Tells Xcode to export the .ipa using ad-hoc distribution with manual signing. Without this file the xcodebuild -exportArchive step would fail.
+manifest.json	Progressive Web App (PWA) manifest. Lets browsers offer "Add to Home Screen" on both Android and iOS, setting the app name, theme colour, icons, and display mode (standalone — no browser chrome). Referenced by <link rel="manifest"> in index.html.
+package.json	Node.js project definition. Declares the Capacitor dependencies (@capacitor/core, @capacitor/ios, @capacitor/android) and convenience scripts (npx cap sync, open Android Studio, build debug APK). Required by npm install to pull down the Capacitor tooling.
+package-lock.json	Auto-generated lockfile that records the exact versions of every npm package installed. Ensures reproducible installs in CI and on other machines — you don't edit it directly.
+In short: manifest.json = PWA browser install, capacitor.config.json + package.json + package-lock.json = iOS/Android native app build, ExportOptions.plist = iOS .ipa export step in CI.
+
+=========
+can I rename my project name from gongs-tree to gongs-familytree
+
+===========
+for the index.html, when I click the button "族谱说明"， the html popup window will shown, but the backend index.html window will be changed, especially the title of the applicaiton area, please check the screenshot for detail, the applicaiton title "白水电子族谱" will only shown the bottom part
+
+============
+no, the issue still persist, only the button "族谱说明" will cause that problem, other buttons for import, export does not have that issue
+
+===========
+The issue was fixed, but the modal window of the "族谱说明" is a little bit too small, can you make it the same size like the "关于本程序"
+
+==========
+does the size of the "族谱说明" fix for any mobile phone?
+
+=========
+is the apk for android phone already built? where can I find it
+
+=========
+is the ipa for iOS already built with the latest fix? where can I find it
+
+==========
+can you sync the code to github and re-build the ipa there
+
+==========
+In iphone, it shows Untrusted Developer, where can I do the setting
+
+On iPhone, go to:
+Settings → General → VPN & Device Management
+
+============
+in iphone, when I try to import file, it only support .json file, .json5 is not supported
+
+===========
+for the index.html, it has four buttons, can you please convert them into one new button with three horizental lines, when the new button clicked, the tooltips of the existing four buttons will be shown in a dropdown menu
+===========
+please change the menu "族谱说明" to "族谱续修前言"
+
+=========
+do the ipa and android apk updated

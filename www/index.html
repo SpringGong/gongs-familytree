@@ -71,6 +71,49 @@
       background: rgba(255, 255, 255, 0.35);
     }
 
+    #menu-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .header-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      min-width: 170px;
+      z-index: 9999;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-menu.hidden {
+      display: none;
+    }
+
+    .menu-item {
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      padding: 13px 18px;
+      font-size: 15px;
+      color: #2d3748;
+      cursor: pointer;
+      display: block;
+      white-space: nowrap;
+      user-select: none;
+      -webkit-user-select: none;
+      box-sizing: border-box;
+    }
+
+    .menu-item:hover, .menu-item:active {
+      background: #f0f4fa;
+    }
+
     /* ─── Search bar ─────────────────────── */
     #search-bar {
       background: white;
@@ -372,11 +415,16 @@
   <!-- Header bar -->
   <div id="app-header">
     <h1>白水电子族谱</h1>
-    <button class="header-btn" id="export-btn" title="导出族谱数据">📤</button>
-    <label for="choose-file" class="header-btn" title="导入族谱数据">📂</label>
+    <div id="menu-wrap">
+      <button class="header-btn" id="menu-btn" title="菜单">☰</button>
+      <div id="header-menu" class="header-menu hidden">
+        <button class="menu-item" id="export-btn">📤 导出族谱数据</button>
+        <label for="choose-file" class="menu-item">📂 导入族谱数据</label>
+        <button class="menu-item" id="desc-btn">📜 族谱续修前言</button>
+        <button class="menu-item" id="info-btn">ℹ️ 关于本程序</button>
+      </div>
+    </div>
     <input type="file" id="choose-file" accept="application/json,text/plain,.json,.json5" style="display:none">
-    <button class="header-btn" id="desc-btn" title="族谱说明">📜</button>
-    <button class="header-btn" id="info-btn" title="关于本程序">ℹ️</button>
   </div>
 
   <!-- Search bar -->
@@ -457,10 +505,10 @@
   <div id="desc-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;z-index:1000;padding:16px;">
     <div class="edit-dialog" style="max-width:480px;width:100%;height:88vh;height:88dvh;">
       <div class="edit-header">
-        <span>族谱说明</span>
+        <span>族谱续修前言</span>
         <button class="edit-close" id="desc-close-btn">✕</button>
       </div>
-      <iframe id="desc-content" style="flex:1;min-height:260px;border:none;display:block;border-radius:0;" title="族谱说明"></iframe>
+      <iframe id="desc-content" style="flex:1;min-height:260px;border:none;display:block;border-radius:0;" title="族谱续修前言"></iframe>
       <div class="edit-footer">
         <button class="btn-cancel" id="desc-ok-btn">关闭</button>
       </div>
@@ -1517,6 +1565,18 @@
 
       document.getElementById('choose-file').addEventListener('change', function () { readFile(this); });
       document.getElementById('export-btn').addEventListener('click', downloadData);
+
+      // Hamburger menu toggle
+      const menuBtn = document.getElementById('menu-btn');
+      const headerMenu = document.getElementById('header-menu');
+      menuBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        headerMenu.classList.toggle('hidden');
+      });
+      document.addEventListener('click', () => { headerMenu.classList.add('hidden'); });
+      headerMenu.querySelectorAll('.menu-item').forEach(item => {
+        item.addEventListener('click', () => { headerMenu.classList.add('hidden'); });
+      });
       document.getElementById('searchBtn').addEventListener('click', searchDiagram);
       document.getElementById('nextBtn').addEventListener('click', findNext);
       document.getElementById('mySearch').addEventListener('keypress', e => {
@@ -1545,7 +1605,7 @@
       document.getElementById('desc-btn').addEventListener('click', () => {
         const text = localStorage.getItem(LS_DESC);
         const iframe = document.getElementById('desc-content');
-        iframe.srcdoc = text || '<p style="margin:20px;font-family:sans-serif;font-size:15px;color:#666;">暂无族谱说明</p>';
+        iframe.srcdoc = text || '<p style="margin:20px;font-family:sans-serif;font-size:15px;color:#666;">暂无族谱续修前言</p>';
         openModal(descModal);
       });
       document.getElementById('desc-close-btn').addEventListener('click', () => { closeModal(descModal); });
